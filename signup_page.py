@@ -49,7 +49,7 @@ def add_user(full_name, email, password):
 
   
 
-#logging page
+#signup page
 
 st.set_page_config(
     page_title="TaxFlowLK",
