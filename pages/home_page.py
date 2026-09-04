@@ -4,28 +4,13 @@ import streamlit as st
 
 
 st.html("""
-    <div style="background-color: #f5f5f5; padding: 100px; border-radius: 20px; text-align: center;">
-        <h2 style="color: #333;">Welcome</h2>
-        <h3 style="color: #333;">to</h3>
-        <h1 style="color: #8B0000;">TaxFlowLK</h1>
-        <p style="color: #666;">Your one-stop solution for tax management and filing.</p>
-        <style>
-        .get-started {
-            background-color: #000000;
-            color: #ffffff;
-            border-radius: 10px;
-            padding: 10px 20px;
-            }
-        .get-started:hover {
-            background-color: #ffffff;
-            color: #000000;
-            }
-        </style>,
-        <button 
-        class="get-started"
-        onclick="window.location.href='/signup_page'">
-        Get Started
-        </button>
-         
-    </div>
+        <h2 style="color: #f5f5f5; text-align: center";>Welcome</h2>
+        <h3 style="color: #f5f5f5; text-align: center";>to</h3>
+        <h1 style="color: #8B0000; text-align: center";>TaxFlowLK</h1>
+        <p style="color: #f5f5f5; text-align: center";>Your one-stop solution for tax management and filing.</p>   
 """)
+
+if st.button("Get Standard"):
+    st.switch_page("pages/signup_page.py")
+
+ #does not work the redirect to signup page
