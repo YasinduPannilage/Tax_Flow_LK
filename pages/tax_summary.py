@@ -137,3 +137,7 @@ if result["net_tax_payable"] > 0:
     st.error(f"**Balance tax payable:** Rs. {result['net_tax_payable']:,.2f}")
 else:
     st.success(f"**Refund due:** Rs. {result['refund_due']:,.2f}")
+
+if st.button("file tax return"):
+    st.switch_page("pages/return_page1.py")
+    
