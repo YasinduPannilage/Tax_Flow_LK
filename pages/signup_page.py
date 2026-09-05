@@ -2,9 +2,17 @@
 import psycopg2
 import hashlib
 import streamlit as st
+from psycopg2.extensions import new_type, register_type, DECIMAL
 
 def get_connection():
     return psycopg2.connect(**st.secrets["postgres"])
+
+
+def cast_numeric_to_float(value, cur):
+    return float(value) if value is not None else None
+
+DEC2FLOAT = new_type(DECIMAL.values, 'DEC2FLOAT', cast_numeric_to_float)
+register_type(DEC2FLOAT)
 
 def init_db():
     conn = get_connection()
