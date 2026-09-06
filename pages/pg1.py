@@ -1,7 +1,5 @@
 import streamlit as st
-import sqlite3
 
-conn = sqlite3.connect('tax_data.db')
 st.markdown("<h1 style='text-align: center;'>TaxFlowLK</h1>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center;'>Welcome to your tax filing journey!</h3>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>Create your annual tax return <br><b>Simply & Responsibly</b></p>", unsafe_allow_html=True)

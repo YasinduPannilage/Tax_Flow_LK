@@ -1,56 +1,7 @@
-#Tax Flow LK
-import psycopg2
-import hashlib
 import streamlit as st
-from psycopg2.extensions import new_type, register_type, DECIMAL
-
-def get_connection():
-    return psycopg2.connect(**st.secrets["postgres"])
-
-
-def cast_numeric_to_float(value, cur):
-    return float(value) if value is not None else None
-
-DEC2FLOAT = new_type(DECIMAL.values, 'DEC2FLOAT', cast_numeric_to_float)
-register_type(DEC2FLOAT)
-
-def init_db():
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            full_name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-        )
-    """)
-    conn.commit()
-    c.close()
-    conn.close()
+from db import add_user, init_db
 
 init_db()
-
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def add_user(full_name, email, password):
-    conn = get_connection()
-    c = conn.cursor()
-    hashed_password = hash_password(password)
-    try:
-        c.execute(
-            "INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)",
-            (full_name, email, hashed_password)
-        )
-        conn.commit()
-        return True
-    except psycopg2.errors.UniqueViolation:
-        conn.rollback()
-        return False
-    finally:
-        c.close()
-        conn.close()
 
 st.markdown("<h1 style='text-align: center;'>Welcome <br> to <br> TaxFlowLK</h1>",
             unsafe_allow_html=True)
@@ -60,15 +11,17 @@ st.markdown("<p style='text-align: center;'>create your account</p>", unsafe_all
 
 full_name = st.text_input("Enter your full name", key="full_name")
 email = st.text_input("Enter your email address", key="email")
+nic_number = st.text_input("Enter your National Identity Card number", key="nic_number")
+phone_number = st.text_input("Enter your phone number", key="phone_number")
 password = st.text_input("Create your password", type="password", key="password")
 confirm_password = st.text_input("Confirm your password", type="password", key="confirm_password")
 
 if st.button("Create Account"):
-    if not full_name or not email or not password or not confirm_password:
+    if not full_name or not email or not password or not confirm_password or not nic_number or not phone_number:
         st.error("Please fill in all fields.")
     elif password != confirm_password:
         st.error("Passwords do not match!")
-    elif add_user(full_name, email, password):
+    elif add_user(full_name, email, password, nic_number, phone_number):
         st.success("Account created successfully!")
         st.switch_page("pages/login_page.py")
     else:
